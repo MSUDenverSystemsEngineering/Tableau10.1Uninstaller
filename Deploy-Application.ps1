@@ -134,14 +134,18 @@ Try {
 		## <Perform Installation tasks here>
 		$exitCode = Start-Process "cmd.exe" -ArgumentList "/c `"msiexec /uninstall {A8E51B4C-3163-46B3-AC07-CFD6111F89AC}`" /qn"
         If (($exitCode.ExitCode -ne "0") -and ($mainExitCode -ne "3010")) { $mainExitCode = $exitCode.ExitCode }
+
 		
 		##*===============================================
 		##* POST-INSTALLATION
 		##*===============================================
 		[string]$installPhase = 'Post-Installation'
 		
+
 		## <Perform Post-Installation tasks here>
 		
+        Remove-RegistryKey -Key 'HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\{52fa1dab-f2fb-4950-82ee-75a672e03427}' -Recurse
+        
 		## Display a message at the end of the install
 		If (-not $useDefaultMsi) {}
 	}
